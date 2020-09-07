@@ -66,7 +66,38 @@ var citySearchHandler = function(event){
                 // get lat and lon for uv fetch request
                 var lat = data.coord.lat;
                 var lon = data.coord.lon;
-
+                // fetch uv index
+                fetch(`http://api.openweathermap.org/data/2.5/uvi?appid=3ecb6161f0ffa0bfa224115fa7448b5a&lat=${lat}&lon=${lon}`).then(function(response){
+                    if (response.ok){
+                        // convert to json
+                        response.json().then(function(data){
+                            // get uv index
+                            var uv = data.value;
+                            // create uv li
+                            var uvLi = document.createElement("li");
+                            uvLi.textContent = "UV Index: ";
+                            // create span for uv index
+                            var uvSpan = document.createElement("span");
+                            uvSpan.textContent = uv;
+                            // determine uv index color
+                            if (uv < 3){
+                                uvSpan.classList = "uv-low";
+                            }else if (uv < 6){
+                                uvSpan.classList = "uv-mod";
+                            }else if (uv < 8){
+                                uvSpan.classList = "uv-high";
+                            }else if (uv < 11){
+                                uvSpan.classList = "uv-very-high";
+                            }else{
+                                uvSpan.classList = "uv-extreme";
+                            }
+                            // append span to li
+                            uvLi.appendChild(uvSpan);
+                            // add li to ul
+                            weatherList.appendChild(uvLi);
+                        })
+                    }
+                })
                 // append ul to main results
                 mainResultsEl.appendChild(weatherList);
             })
