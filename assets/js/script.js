@@ -4,6 +4,8 @@ var cityInputEl = document.querySelector("#city");
 var citySearchForm = document.querySelector("#city-search-form");
 // select search container element
 var searchContainerEl = document.querySelector("#search-container");
+// select previous searches div
+var previousSearchesEl = document.querySelector("#previous-searches");
 // select the main results container
 var mainResultsEl = document.querySelector("#main-results");
 
@@ -17,21 +19,7 @@ var citySearchHandler = function(event){
     var city = cityInputEl.value;
     // use the fetch function for that city
     cityFetch(city);
-    // convert city to upper case
-    city = city.toUpperCase();
-    // check if city is in cities list
-    if (!cities.includes(city)){
-        // add city to list
-        cities.push(city);
-        // create button element
-        var cityBtn = document.createElement("button");
-        cityBtn.setAttribute("data-city-name", city);
-        cityBtn.textContent = city;
-        // append button to search container
-        searchContainerEl.appendChild(cityBtn);
-        // save list to local storage
-        localStorage.setItem("cities", JSON.stringify(cities));
-    }
+    
 }
 
 // function to fetch city weather info using api
@@ -40,6 +28,22 @@ var cityFetch = function(city){
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=3ecb6161f0ffa0bfa224115fa7448b5a`).then(function(response){
         // if the fetch is successful
         if (response.ok){
+            // convert city to upper case
+            city = city.toUpperCase();
+            // check if city is in cities list
+            if (!cities.includes(city)){
+                // add city to list
+                cities.push(city);
+                // create button element
+                var cityBtn = document.createElement("button");
+                cityBtn.classList = "city-btn";
+                cityBtn.setAttribute("data-city-name", city);
+                cityBtn.textContent = city;
+                // append button to search container
+                previousSearchesEl.appendChild(cityBtn);
+                // save list to local storage
+                localStorage.setItem("cities", JSON.stringify(cities));
+            }
             // convert to json
             response.json().then(function(data){
                 // clear the main results section
@@ -147,12 +151,24 @@ var loadCities = function(){
     for (var i = 0; i < cities.length; i++){
         // create button element
         var cityBtn = document.createElement("button");
+        cityBtn.classList = "city-btn";
         cityBtn.setAttribute("data-city-name", cities[i]);
         cityBtn.textContent = cities[i];
         // append button to search container
-        searchContainerEl.appendChild(cityBtn);
+        previousSearchesEl.appendChild(cityBtn);
     }
 }
 
+var prevSearchHandler = function(event){
+    // get the city name from the closest button clicked
+    var city = event.target.closest(".city-btn").textContent;
+    // use that city name to fetch
+    cityFetch(city);
+}
+
+// load previous searches
 loadCities();
+// add event listener to search form submit
 citySearchForm.addEventListener("submit", citySearchHandler);
+// add event listener for click of previous searches
+previousSearchesEl.addEventListener("click", prevSearchHandler);
