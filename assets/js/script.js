@@ -1,5 +1,9 @@
+// select city search input element
 var cityInputEl = document.querySelector("#city");
+// select form element
 var citySearchForm = document.querySelector("#city-search-form");
+// select the main results container
+var mainResultsEl = document.querySelector("#main-results");
 
 // function to handle when a city is searched for
 var citySearchHandler = function(event){
@@ -12,12 +16,24 @@ var citySearchHandler = function(event){
         if (response.ok){
             // convert to json
             response.json().then(function(data){
-                console.log(data);
+                // clear the main results section
+                mainResultsEl.innerHTML = "";
                 // city name,
                 var cityName = data.name; 
-                // the date, 
+                // the date,
+                var date = moment().format("MM/DD/YYYY"); 
                 // an icon representation of weather conditions, 
-                var icon = data.weather.icon;
+                var icon = data.weather[0].icon;
+                // icon url
+                var iconUrl = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+                // create icon img element
+                var iconImg = document.createElement("img");
+                iconImg.setAttribute("src", iconUrl);
+                // add city name, date, and icon as a header
+                var cityHeader = document.createElement("h2");
+                cityHeader.textContent = `${cityName} (${date})`;
+                cityHeader.appendChild(iconImg);
+                mainResultsEl.appendChild(cityHeader);
                 // the temperature, 
                 var temp = data.main.temp;
                 // the humidity, 
