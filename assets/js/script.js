@@ -2,14 +2,40 @@
 var cityInputEl = document.querySelector("#city");
 // select form element
 var citySearchForm = document.querySelector("#city-search-form");
+// select search container element
+var searchContainerEl = document.querySelector("#search-container");
 // select the main results container
 var mainResultsEl = document.querySelector("#main-results");
+
+// create list to store searched cities
+var cities = [];
 
 // function to handle when a city is searched for
 var citySearchHandler = function(event){
     event.preventDefault();
     // get the city from the form input
     var city = cityInputEl.value;
+    // use the fetch function for that city
+    cityFetch(city);
+    // convert city to upper case
+    city = city.toUpperCase();
+    // check if city is in cities list
+    if (!cities.includes(city)){
+        // add city to list
+        cities.push(city);
+        // create button element
+        var cityBtn = document.createElement("button");
+        cityBtn.setAttribute("data-city-name", city);
+        cityBtn.textContent = city;
+        // append button to search container
+        searchContainerEl.appendChild(cityBtn);
+        // save list to local storage
+        localStorage.setItem("cities", JSON.stringify(cities));
+    }
+}
+
+// function to fetch city weather info using api
+var cityFetch = function(city){
     // make a fetch request using the city name
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=3ecb6161f0ffa0bfa224115fa7448b5a`).then(function(response){
         // if the fetch is successful
@@ -101,8 +127,32 @@ var citySearchHandler = function(event){
                 // append ul to main results
                 mainResultsEl.appendChild(weatherList);
             })
+        } else{
+            alert("Error: " + response.statusText);
         }
-    })
+    })  
 }
 
+// function to render previous searches
+var loadCities = function(){
+    // set cities variable to localStorage value
+    cities = JSON.parse(localStorage.getItem("cities"));
+    console.log(cities);
+    console.log("text");
+    if (!cities){
+        cities = [];
+        return
+    }
+    // render each city on the page as a button
+    for (var i = 0; i < cities.length; i++){
+        // create button element
+        var cityBtn = document.createElement("button");
+        cityBtn.setAttribute("data-city-name", cities[i]);
+        cityBtn.textContent = cities[i];
+        // append button to search container
+        searchContainerEl.appendChild(cityBtn);
+    }
+}
+
+loadCities();
 citySearchForm.addEventListener("submit", citySearchHandler);
