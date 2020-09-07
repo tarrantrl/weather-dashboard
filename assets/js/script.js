@@ -33,19 +33,42 @@ var citySearchHandler = function(event){
                 var cityHeader = document.createElement("h2");
                 cityHeader.textContent = `${cityName} (${date})`;
                 cityHeader.appendChild(iconImg);
+                // append to main results div
                 mainResultsEl.appendChild(cityHeader);
+                // create list of weather info
+                var weatherList = document.createElement("ul");
                 // the temperature, 
                 var temp = data.main.temp;
+                // convert temp to farenheit
+                var fTemp = ((temp - 273.15) * (9/5) + 32).toFixed(1);
+                // create temp li
+                var tempLi = document.createElement("li");
+                tempLi.textContent = "Temperature: " + fTemp + "°F";
+                // append to ul
+                weatherList.appendChild(tempLi);
                 // the humidity, 
                 var humidity = data.main.humidity;
+                // create humidity li
+                var humidityLi = document.createElement("li");
+                humidityLi.textContent = "Humidity: " + humidity + "%";
+                // append to ul
+                weatherList.appendChild(humidityLi);
                 // the wind speed, 
                 var windSpeed = data.wind.speed;
+                // convert meters per second to miles per hour
+                var mphWindSpeed = (windSpeed * 2.237).toFixed(1);
+                // create wind speed li
+                var windSpeedLi = document.createElement("li");
+                windSpeedLi.textContent = "Wind Speed: " + mphWindSpeed + " MPH";
+                // append to ul
+                weatherList.appendChild(windSpeedLi);
                 
                 // get lat and lon for uv fetch request
                 var lat = data.coord.lat;
                 var lon = data.coord.lon;
 
-                
+                // append ul to main results
+                mainResultsEl.appendChild(weatherList);
             })
         }
     })
