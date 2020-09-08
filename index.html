@@ -11,21 +11,23 @@
     <title>Weather Dashboard</title>
 </head>
 <body>
-    <header>
-        <h1>Weather Dashboard</h1>
-    </header>
+    <nav class="navbar navbar-light bg-dark text-light">
+        <span class="navbar-brand mb-0 h1 text-light">Weather Dashboard</span>
+      </nav>
     <main>
         <div class="container">
             <div class="row">
-                <div class="col-sm-3" id="search-container">
+                <div class="col-md-3" id="search-container">
                     <form id="city-search-form">
-                        <label for="city">Search for a city</label>
-                        <input id="city" name="city">
-                        <button type="submit" id="city-submit">Submit</button>
+                        <div class="form-group">
+                            <label for="city">Search for a city</label>
+                            <input id="city" name="city" class="form-text text-muted">
+                            <button type="submit" id="city-submit" class="btn btn-primary">Submit</button>
+                        </div>
                     </form>
                     <div id="previous-searches"></div>
                 </div>
-                <div class="col-sm-9" id="results-container">
+                <div class="col-md-9" id="results-container">
                     <div id="main-results"></div>
                     <div id="five-day-results" class="row"></div>
                 </div>

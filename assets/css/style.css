@@ -9,3 +9,16 @@
 .uv-high {
     background: #d80010;
 }
+
+.five-day-card {
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#search-container, #results-container, #five-day-results, #main-results{
+    margin-top: 20px;
+}
+
+#city-submit{
+    margin-top: 5px;
+}
