@@ -58,7 +58,7 @@ var cityFetch = function(city){
                 // an icon representation of weather conditions, 
                 var icon = data.weather[0].icon;
                 // icon url
-                var iconUrl = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+                var iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
                 // create icon img element
                 var iconImg = document.createElement("img");
                 iconImg.setAttribute("src", iconUrl);
@@ -106,7 +106,7 @@ var cityFetch = function(city){
                 var lat = data.coord.lat;
                 var lon = data.coord.lon;
                 // fetch uv index
-                fetch(`http://api.openweathermap.org/data/2.5/uvi?appid=3ecb6161f0ffa0bfa224115fa7448b5a&lat=${lat}&lon=${lon}`).then(function(response){
+                fetch(`https://api.openweathermap.org/data/2.5/uvi?appid=3ecb6161f0ffa0bfa224115fa7448b5a&lat=${lat}&lon=${lon}`).then(function(response){
                     if (response.ok){
                         // convert to json
                         response.json().then(function(data){
@@ -149,7 +149,7 @@ var cityFetch = function(city){
 
 // function to fetch 5 day forecast
 var fiveDayFetch = function(city){
-    fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=f4f14a83552976dedb188c08b5e2b54b`).then(function(response){
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=f4f14a83552976dedb188c08b5e2b54b`).then(function(response){
         if (response.ok){
             // convert to json
             response.json().then(function(data){
@@ -179,7 +179,7 @@ var renderFiveDay = function(day){
     // get icon
     var icon = day.weather[0].icon;
     // icon url
-    var iconUrl = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+    var iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
     // create icon img element
     var iconImg = document.createElement("img");
     iconImg.setAttribute("src", iconUrl);
